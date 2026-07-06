@@ -112,13 +112,8 @@ const ServicesPage = () => {
               >
 
                 {/* 1. Visual Image Block (representing "img") */}
-                <div className="service-visual-block border-glow-wrapper">
-                  <div className="glass-card visual-card">
-                    <div className={`visual-icon-glow glow-${service.glowColor}`}></div>
-                    <div className="visual-image-container">
-                      <img src={service.image} alt={service.title} className="service-product-img" />
-                    </div>
-                  </div>
+                <div className="service-visual-block">
+                  <img src={service.image} alt={service.title} className="service-product-img" />
                 </div>
 
                 {/* 2. Text Content Block (representing "content") */}
@@ -250,85 +245,25 @@ const ServicesPage = () => {
         }
 
         .service-visual-block {
-          height: 420px;
-          border-radius: 20px;
-          perspective: 1200px;
-          transform-style: preserve-3d;
-        }
-
-        .visual-card {
-          height: 100%;
-          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          overflow: hidden;
-          background: rgba(13, 13, 17, 0.35);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 20px;
-          transform-style: preserve-3d;
-          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .visual-image-container {
-          position: absolute;
-          top: 0;
-          left: 0;
           width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 1.25rem;
-          transform: translateZ(35px); /* pop 3D vector forward */
         }
 
         .service-product-img {
           width: 100%;
-          height: 100%;
+          max-width: 100%;
+          height: auto;
           object-fit: contain;
           border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
           transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .service-zigzag-row:hover .service-product-img {
-          transform: scale(1.05) translateZ(10px);
+          transform: scale(1.03);
         }
-
-        /* Service Glow Variations */
-        .visual-icon-glow {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 250px;
-          height: 250px;
-          border-radius: 50%;
-          z-index: 0;
-          pointer-events: none;
-          transition: all 0.5s ease;
-          opacity: 0.4;
-          filter: blur(45px);
-        }
-
-        .glow-cyan { background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%); }
-        .glow-purple { background: radial-gradient(circle, rgba(170, 59, 255, 0.15) 0%, transparent 70%); }
-        .glow-amber { background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%); }
-        .glow-rose { background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, transparent 70%); }
-
-        .service-zigzag-row:hover .visual-card {
-          border-color: rgba(255, 255, 255, 0.12);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-          transform: translateY(-5px) scale(1.02);
-        }
-
-        .service-zigzag-row:hover .visual-icon-glow.glow-cyan { background: radial-gradient(circle, rgba(0, 242, 254, 0.25) 0%, transparent 70%); transform: translate(-50%, -50%) scale(1.2); }
-        .service-zigzag-row:hover .visual-icon-glow.glow-purple { background: radial-gradient(circle, rgba(170, 59, 255, 0.25) 0%, transparent 70%); transform: translate(-50%, -50%) scale(1.2); }
-        .service-zigzag-row:hover .visual-icon-glow.glow-amber { background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%); transform: translate(-50%, -50%) scale(1.2); }
-        .service-zigzag-row:hover .visual-icon-glow.glow-rose { background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, transparent 70%); transform: translate(-50%, -50%) scale(1.2); }
 
         .service-content-block {
           position: relative;

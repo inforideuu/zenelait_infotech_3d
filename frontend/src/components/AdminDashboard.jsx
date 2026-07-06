@@ -483,6 +483,14 @@ Status: SECURED APPLICANT DATA NODE
           .login-card-wrap {
             width: calc(100% - 2rem);
             max-width: 440px;
+            perspective: 1200px;
+            animation: reveal3D 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          }
+
+          /* Override global border-glow-wrapper hover color changes */
+          .login-card-wrap:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
           }
 
           .login-card {
@@ -491,6 +499,25 @@ Status: SECURED APPLICANT DATA NODE
             flex-direction: column;
             gap: 2rem;
             text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+          }
+
+          /* Apply 3D tilt effect on hover */
+          .login-card-wrap:hover .login-card {
+            transform: rotateX(8deg) rotateY(-6deg) translateZ(15px);
+            box-shadow: -20px 30px 60px rgba(0, 0, 0, 0.7);
+          }
+
+          @keyframes reveal3D {
+            0% {
+              opacity: 0;
+              transform: perspective(1200px) rotateX(30deg) translateY(60px) translateZ(-80px);
+            }
+            100% {
+              opacity: 1;
+              transform: perspective(1200px) rotateX(0deg) translateY(0) translateZ(0);
+            }
           }
 
           .login-header {

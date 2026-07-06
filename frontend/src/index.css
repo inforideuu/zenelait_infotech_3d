@@ -195,20 +195,24 @@ p {
 }
 
 .border-glow-wrapper:hover {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg,  rgb(177, 28, 167) 0%, rgba(6, 8, 166, 0.3) 50%);
   box-shadow: 0 0 30px rgba(0, 242, 254, 0.15);
+  color: #ffffff;
+  font-size: 2.6rem;
 }
 
 /* Premium Text Glow */
 .gradient-text {
   background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .cyber-text {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.2));
 }

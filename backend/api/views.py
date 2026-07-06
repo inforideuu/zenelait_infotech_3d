@@ -1,6 +1,7 @@
 import json
 import random
 import os
+import requests
 from django.utils import timezone
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
@@ -432,9 +433,9 @@ def api_seed(request):
             Project.objects.create(name='Synchronized Enterprise ERP Matrix', category='ERP', client='Aura Logistics Group', year='SOON', description='Bespoke corporate operations ecosystem currently undergoing final simulation and security hardening phase.')
 
             # Seed Careers
-            Career.objects.create(title='Principal AI Core Developer', department='Cognitive Engineering', salary='$180k - $220k', description='Architecting early-stage semantic models and routing protocols. Experience with vector indices required.', requirements='5+ years AI development, Python/C++, PyTorch.')
-            Career.objects.create(title='Premium Frontend Engineer', department='Creative Graphics', salary='$140k - $170k', description='Designing interactive web canvases, custom easing spring loops, and high-frequency math vectors.', requirements='Advanced React, GSAP, Canvas API, WebGL knowledge.')
-            Career.objects.create(title='Infrastructure Security Architect', department='Core Operations', salary='$160k - $190k', description='Securing distributed multi-node ledgers and automating failover safety matrices.', requirements='Kubernetes, AWS/GCP, Rust/Go, ledger encryption.')
+            Career.objects.create(title='Principal AI Core Developer', department='Cognitive Engineering', salary='₹15,00,000 - ₹20,00,000', description='Architecting early-stage semantic models and routing protocols. Experience with vector indices required.', requirements='5+ years AI development, Python/C++, PyTorch.')
+            Career.objects.create(title='Premium Frontend Engineer', department='Creative Graphics', salary='₹12,00,000 - ₹15,00,000', description='Designing interactive web canvases, custom easing spring loops, and high-frequency math vectors.', requirements='Advanced React, GSAP, Canvas API, WebGL knowledge.')
+            Career.objects.create(title='Infrastructure Security Architect', department='Core Operations', salary='₹14,00,000 - ₹18,00,000', description='Securing distributed multi-node ledgers and automating failover safety matrices.', requirements='Kubernetes, AWS/GCP, Rust/Go, ledger encryption.')
 
             # Seed Inquiries
             Inquiry.objects.create(name='Jonathan Vance', email='vance@enterprise.com', message='Interested in getting a custom ERP deployment mock-up for our manufacturing pipeline. Please contact me.', resume='resume.pdf')

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { store } from '../../utils/store';
-import { Compass, Briefcase, MapPin, DollarSign, Send, CheckCircle2, Upload } from 'lucide-react';
+import { Compass, Briefcase, MapPin, IndianRupee, Send, CheckCircle2, Upload } from 'lucide-react';
 
 const CareersPage = () => {
   const [jobs, setJobs] = useState(store.getCareers());
@@ -62,8 +62,8 @@ const CareersPage = () => {
                 <div className="job-meta-top">
                   <span className="job-dept-tag">{job.department}</span>
                   <div className="job-salary">
-                    <DollarSign size={14} className="salary-icon" />
-                    <span>{job.salary}</span>
+                    <IndianRupee size={14} className="salary-icon" />
+                    <span>{job.salary ? job.salary.replace(/\$/g, '₹') : ''}</span>
                   </div>
                 </div>
 
@@ -228,11 +228,12 @@ const CareersPage = () => {
 
         .job-item-wrap {
           border-radius: 16px;
+          perspective: 1000px;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .job-item-wrap:hover {
-          transform: translateY(-4px);
+          /* No TranslateY here to keep 3D rotation clean */
         }
 
         .job-item-card {
@@ -246,13 +247,15 @@ const CareersPage = () => {
           -webkit-backdrop-filter: blur(16px) saturate(180%);
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 16px;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          transform-style: preserve-3d;
+          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, border-color 0.4s ease;
         }
 
         .job-item-wrap:hover .job-item-card {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: rgba(170, 59, 255, 0.25);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), 0 0 30px rgba(170, 59, 255, 0.08);
+          transform: rotateX(6deg) rotateY(-4deg) translateZ(10px);
+          background: rgba(13, 13, 17, 0.65);
+          border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: -15px 25px 45px rgba(0, 0, 0, 0.65);
         }
 
         .job-meta-top {
