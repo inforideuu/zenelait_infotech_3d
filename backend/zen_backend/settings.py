@@ -78,12 +78,15 @@ WSGI_APPLICATION = 'zen_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zen_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'test',
+        'USER': '2pZ9VmqAYkPmdfK.root',
+        'PASSWORD': 'dpdNCD6crDzSCSps',
+        'HOST': 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
+        'PORT': '4000',
         'OPTIONS': {
+            'ssl': {
+                'ssl_mode': 'VERIFY_IDENTITY',
+            },
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
     }
