@@ -130,7 +130,7 @@ const IntroSection = () => {
                   Corporate Architecture Overview
                 </h3>
 
-                <p className="excellence-paragraph">
+                <p className="excellence-paragraph" style={{textAlign:"justify"}}>
                   Zenelait Infotech is a premier product-based IT company in Chennai, offering end-to-end software development and digital solutions. From startups to enterprises, we help businesses grow digitally with secure and scalable technology.
                 </p>
 

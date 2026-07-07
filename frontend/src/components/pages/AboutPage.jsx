@@ -18,18 +18,19 @@ import {
   Terminal,
   ArrowRight,
   Code,
-  TextAlignCenter,
   AlignCenter
 } from 'lucide-react';
 
 const AboutPage = () => {
   const [hoveredEdgeCard, setHoveredEdgeCard] = useState(null);
   const [testimonials, setTestimonials] = useState(store.getTestimonials());
+  const [aboutData, setAboutData] = useState(store.getAbout());
   const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
 
   useEffect(() => {
     const handleUpdate = () => {
       setTestimonials(store.getTestimonials());
+      setAboutData(store.getAbout());
     };
     window.addEventListener('aura_store_update', handleUpdate);
     return () => window.removeEventListener('aura_store_update', handleUpdate);
@@ -78,8 +79,8 @@ const AboutPage = () => {
                 <Sparkles size={24} className="icon-cyan" />
               </div>
               <h2 className="section-heading font-display">Who We Are</h2>
-              <p className="intro-paragraph">
-                Zenelait Infotech specializes in building custom software products that empower startups, SMEs, and large enterprises. We bridge the gap between complex business challenges and innovative technology solutions.
+              <p className="intro-paragraph" style={{textAlign:"left"}}>
+                {aboutData.who_we_are || "Zenelait Infotech specializes in building custom software products that empower startups, SMEs, and large enterprises. We bridge the gap between complex business challenges and innovative technology solutions."}
               </p>
               <div className="card-deco-line"></div>
             </div>
@@ -93,8 +94,8 @@ const AboutPage = () => {
                 <Award size={24} className="icon-purple" />
               </div>
               <h2 className="section-heading font-display">Our Commitment</h2>
-              <p className="intro-paragraph text-highlight">
-                Our focus is on delivering high-quality development, timely delivery, and long-term support. As a trusted product-based organization, we ensure that every solution we build—from ERP systems to mobile applications—is engineered to absorb massive concurrency and scale effortlessly.
+              <p className="intro-paragraph text-highlight" style={{textAlign:"left"}}>
+                {aboutData.commitment || "Our focus is on delivering high quality development, timely delivery, and long term support. As a trusted product based organization, we ensure that every solution we build from ERP systems to mobile applications is engineered to absorb massive concurrency and scale effortlessly."}
               </p>
               <div className="location-badge">
                 <div className="pulse-indicator"></div>
@@ -124,7 +125,7 @@ const AboutPage = () => {
 
           <div className="three-cards-grid">
 
-            {/* Mission Card */}
+             {/* Mission Card */}
             <div className="border-glow-wrapper">
               <div className="glass-card purpose-card">
                 <div className="purpose-number font-display">01</div>
@@ -132,8 +133,8 @@ const AboutPage = () => {
                   <Target size={28} className="icon-cyan" />
                 </div>
                 <h3 className="purpose-card-title font-display">Our Mission</h3>
-                <p className="purpose-card-desc">
-                  To build state-of-the-art custom products and scale computational structures that convert complex enterprise friction into seamless, high-velocity digital operational loops.
+                <p className="purpose-card-desc" style={{textAlign:"left"}}>
+                  {aboutData.mission || "To build state-of-the-art custom products and scale computational structures that convert complex enterprise friction into seamless, high-velocity digital operational loops."}
                 </p>
               </div>
             </div>
@@ -146,8 +147,8 @@ const AboutPage = () => {
                   <Rocket size={28} className="icon-purple" />
                 </div>
                 <h3 className="purpose-card-title font-display">Our Vision</h3>
-                <p className="purpose-card-desc">
-                  To emerge as a premier globally-trusted technological architect, setting absolute benchmarks for software scale, architectural durability, and customer-first long-term partnerships.
+                <p className="purpose-card-desc" style={{textAlign:"left"}}>
+                  {aboutData.vision || "To emerge as a premier globally-trusted technological architect, setting absolute benchmarks for software scale, architectural durability, and customer-first long-term partnerships."}
                 </p>
               </div>
             </div>
@@ -160,8 +161,8 @@ const AboutPage = () => {
                   <ShieldCheck size={28} className="icon-amber" />
                 </div>
                 <h3 className="purpose-card-title font-display">Product Values</h3>
-                <p className="purpose-card-desc">
-                  Engineered with uncompromising precision. We value bulletproof safety, high concurrency, clean procedural pipelines, and high-fidelity aesthetics across every system.
+                <p className="purpose-card-desc" style={{textAlign:"left"}}>
+                  {aboutData.values || "Engineered with uncompromising precision. We value bulletproof safety, high concurrency, clean procedural pipelines, and high-fidelity aesthetics across every system."}
                 </p>
               </div>
             </div>
@@ -362,8 +363,8 @@ const AboutPage = () => {
                 </div>
                 <h3 className="member-name font-display">Chief Executive Officer</h3>
                 <span className="member-role font-display">Founder & CEO</span>
-                <p className="member-bio">
-                  A visionary technologist leading the general strategy and product culture at Zenelait. Passionate about empowering startups and enterprises through high-concurrency systems.
+                <p className="member-bio" style={{textAlign:"left"}}>
+                  A visionary technologist leading the general strategy and product culture at Zenelait Infotech. Passionate about empowering startups and enterprises through high-concurrency systems.
                 </p>
                 <div className="member-social-glow"></div>
               </div>
@@ -378,7 +379,7 @@ const AboutPage = () => {
                 </div>
                 <h3 className="member-name font-display">Head of Delivery</h3>
                 <span className="member-role font-display">Project & Product Management</span>
-                <p className="member-bio">
+                <p className="member-bio" style={{textAlign:"left"}}>
                   Aligns complex business objectives with execution pipelines, ensuring high-quality, systematic sprint delivery, and robust product lifecycle roadmaps on schedule.
                 </p>
                 <div className="member-social-glow"></div>
@@ -394,7 +395,7 @@ const AboutPage = () => {
                 </div>
                 <h3 className="member-name font-display">Lead Product Developer</h3>
                 <span className="member-role font-display">Principal Software Architect</span>
-                <p className="member-bio">
+                <p className="member-bio" style={{textAlign:"left"}}>
                   Specializes in procedurally sound custom codebases, massive database scaling architectures, elastic API layers, and highly reactive interactive canvas platforms.
                 </p>
                 <div className="member-social-glow"></div>
@@ -409,10 +410,10 @@ const AboutPage = () => {
               <div className="culture-grid">
                 <div className="culture-left">
                   <h3 className="culture-title font-display">Our Dynamic Culture</h3>
-                  <p className="culture-paragraph">
+                  <p className="culture-paragraph" style={{textAlign:"justify"}}>
                     We are a cohesive team of dedicated software builders, problem solvers, and creative interface artists. At Zenelait Infotech, we embrace continuous learning, transparent sprint delivery methodologies, and relentless technical refinement.
                   </p>
-                  <p className="culture-paragraph">
+                  <p className="culture-paragraph" style={{textAlign:"left"}}>
                     Every member of our crew is committed to crafting scalable structures that stay resilient under massive computational demands. We work in close synergy, turning complex ideas into flawless software assets.
                   </p>
                 </div>

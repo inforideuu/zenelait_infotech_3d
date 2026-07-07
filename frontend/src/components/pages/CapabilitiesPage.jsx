@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { store } from '../../utils/store';
 import {
   Cloud,
   Lock,
@@ -126,35 +127,35 @@ const CAPABILITIES_DATA = [
 
 const PROBLEMS_RESOLUTIONS_DATA = [
   {
-    problemTitle: 'Siloed Divisional Database Matrices',
-    problemDesc: 'Different business branches operating on disjointed data pipelines, resulting in inventory mismatches, double billing, and severe operational overhead.',
-    resolutionTitle: 'Unified Corporate ERP Mesh',
-    resolutionDesc: 'Deploying a single, synchronized database platform mapping financials, warehousing, HR, and client billing in real time with sub-millisecond sync cycles.',
-    stats: '100% Data Cohesion',
+    problemTitle: 'Disjointed Enterprise Data Silos',
+    problemDesc: 'Disjointed database silos across business departments causing synchronization lags, manual double-entry errors, and inconsistent reporting.',
+    resolutionTitle: 'Unified Corporate ERP Core',
+    resolutionDesc: 'A single, central database engine integrating all financial, HR, logistics, and billing pipelines into a unified real-time ledger.',
+    stats: '100% Data Integrity',
     latency: 'Real-time Sync'
   },
   {
-    problemTitle: 'Global Microservice Caching Lag',
-    problemDesc: 'Centralized database clusters encountering massive query bottlenecks and request timeouts during peak high-concurrency user spikes.',
-    resolutionTitle: 'Distributed Edge Caching Networks',
-    resolutionDesc: 'Architecting distributed caching nodes globally using Kubernetes clusters and high-performance Redis nodes, dropping database lookup latency to under 50ms.',
-    stats: '64% Latency Drop',
-    latency: '< 50ms Sync'
+    problemTitle: 'High-Concurrency Query Bottlenecks',
+    problemDesc: 'Primary database structures bottlenecking under high concurrency loads, resulting in page timeouts and slow lookup queries.',
+    resolutionTitle: 'Distributed Multi-Region Cache Mesh',
+    resolutionDesc: 'Deploying optimized Redis edge nodes globally to intercept read queries and resolve lookups instantly with minimal server load.',
+    stats: '99.9% Cache Hit Rate',
+    latency: '< 10ms Latency'
   },
   {
-    problemTitle: 'Support Inbox & Ticket Backlog',
-    problemDesc: 'Customer support agents overwhelmed with basic, repetitive queries, causing response times to stretch past 24 hours and tanking customer satisfaction.',
-    resolutionTitle: 'Cognitive Semantic Neural Agents',
-    resolutionDesc: 'Integrating natural language parsing AI chat agents trained on specialized product context databases to handle 90% of incoming tickets instantly 24/7.',
-    stats: '90% Automated Resolution',
-    latency: 'Instant 24/7 Support'
+    problemTitle: 'Customer Support Operations Lags',
+    problemDesc: 'Customer support teams overwhelmed by high volumes of repetitive inquiries, delaying critical technical support responses.',
+    resolutionTitle: 'AI Neural Conversational Agent',
+    resolutionDesc: 'Embedding semantic LLM assistant nodes trained on product documentation to instantly resolve standard inquiries 24/7.',
+    stats: '85% Case Deflection',
+    latency: 'Instant Response'
   }
 ];
 
 const FEATURED_SOLUTIONS_DATA = [
   {
-    id: 'sol_zenith',
-    title: 'Zenith Ledger ERP Suite',
+    id: 'Zenelait',
+    title: 'zenelait Ledger ERP Suite',
     tag: 'FLAGSHIP PLATFORM',
     description: 'Bespoke corporate logistics ecosystem engineered to manage accounting, inventory, human resources, and branches operations seamlessly.',
     specs: ['Immutable Ledger Security', 'Multi-Node Synchronization', 'Dynamic Attributes Flow'],
@@ -230,6 +231,15 @@ const CapabilitiesPage = () => {
   const [solutionHoveredId, setSolutionHoveredId] = useState(null);
   const [hoveredModelId, setHoveredModelId] = useState(null);
   const [hoveredQaId, setHoveredQaId] = useState(null);
+  const [problems, setProblems] = useState(store.getProblems() || []);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setProblems(store.getProblems() || []);
+    };
+    window.addEventListener('aura_store_update', handleUpdate);
+    return () => window.removeEventListener('aura_store_update', handleUpdate);
+  }, []);
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const modelRefs = useRef({});
@@ -301,6 +311,15 @@ const CapabilitiesPage = () => {
   };
 
   const activeData = selectedItem || (activeIndex !== null ? CAPABILITIES_DATA[activeIndex] : null);
+
+  const problemsData = (problems.length > 0 ? problems : PROBLEMS_RESOLUTIONS_DATA).map(p => ({
+    problemTitle: p.problemTitle || p.problem_title || '',
+    problemDesc: p.problemDesc || p.problem_desc || '',
+    resolutionTitle: p.resolutionTitle || p.resolution_title || '',
+    resolutionDesc: p.resolutionDesc || p.resolution_desc || '',
+    stats: p.stats || '',
+    latency: p.latency || ''
+  }));
 
   return (
     <div className="subpage-wrapper capabilities-3d-theme">
@@ -648,7 +667,7 @@ const CapabilitiesPage = () => {
                 <span style={{ fontSize: '1rem' }}>ENTERPRISE FRICTION POINT</span>
               </div>
               <div className="friction-list">
-                {PROBLEMS_RESOLUTIONS_DATA.map((prob, idx) => (
+                {problemsData.map((prob, idx) => (
                   <button
                     key={idx}
                     className={`friction-node-btn ${selectedProblemIdx === idx ? 'active' : ''}`}
@@ -668,7 +687,7 @@ const CapabilitiesPage = () => {
               </div>
 
               <div className="resolution-card-viewport">
-                {PROBLEMS_RESOLUTIONS_DATA.map((prob, idx) => {
+                {problemsData.map((prob, idx) => {
                   const isActive = selectedProblemIdx === idx;
                   if (!isActive) return null;
 

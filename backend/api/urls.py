@@ -9,9 +9,11 @@ urlpatterns = [
     path('services/', views.api_services, name='api_services'),
     path('services/<int:item_id>/', views.api_services, name='api_services_detail'),
 
-    # Capabilities
-    path('capabilities/', views.api_capabilities, name='api_capabilities'),
-    path('capabilities/<int:item_id>/', views.api_capabilities, name='api_capabilities_detail'),
+
+
+    # Problems & Resolutions
+    path('problems/', views.api_problems_resolutions, name='api_problems_resolutions'),
+    path('problems/<int:item_id>/', views.api_problems_resolutions, name='api_problems_resolutions_detail'),
 
     # Projects
     path('projects/', views.api_projects, name='api_projects'),

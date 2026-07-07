@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-from .models import About, TeamMember, Service, Capability, Project, Career, Inquiry, Testimonial, AdminCredential, OtpCode
+from .models import About, TeamMember, Service, Project, Career, Inquiry, Testimonial, AdminCredential, OtpCode, ProblemResolution
 
 # Helper to serialize dynamic fields
 def to_dict(model_obj):
@@ -31,7 +31,9 @@ def api_about(request):
         about_obj = About.objects.create(
             mission="To architect scalable, high-performance digital matrices that empower global enterprises through precision technology.",
             vision="To set the absolute standard for immersive, highly kinetic, interactive web experiences and cognitive platforms.",
-            history="Founded in 2026, AURA began as an experimental laboratory dedicated to exploring dynamic scroll pipelines. Today, we deliver state-of-the-art computational infrastructure for fortune 500 tech companies."
+            who_we_are="Zenelait Infotech specializes in building custom software products that empower startups, SMEs, and large enterprises. We bridge the gap between complex business challenges and innovative technology solutions.",
+            commitment="Our focus is on delivering high quality development, timely delivery, and long term support. As a trusted product based organization, we ensure that every solution we build from ERP systems to mobile applications is engineered to absorb massive concurrency and scale effortlessly.",
+            values="Engineered with uncompromising precision. We value bulletproof safety, high concurrency, clean procedural pipelines, and high-fidelity aesthetics across every system."
         )
         # Create default team members
         TeamMember.objects.create(about=about_obj, name='Dr. Helen Vance', role='Chief Technical Architect', bio='Former infrastructure lead at NASA, specialized in procedural rendering and lattice math.')
@@ -49,7 +51,9 @@ def api_about(request):
             body = json.loads(request.body)
             about_obj.mission = body.get('mission', about_obj.mission)
             about_obj.vision = body.get('vision', about_obj.vision)
-            about_obj.history = body.get('history', about_obj.history)
+            about_obj.who_we_are = body.get('who_we_are', about_obj.who_we_are)
+            about_obj.commitment = body.get('commitment', about_obj.commitment)
+            about_obj.values = body.get('values', about_obj.values)
             about_obj.save()
 
             # Handle team updates if passed in
@@ -142,20 +146,49 @@ def api_services(request, item_id=None):
     return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
 
 @csrf_exempt
-def api_capabilities(request, item_id=None):
+def api_problems_resolutions(request, item_id=None):
     if request.method == 'GET':
-        caps = [to_dict(c) for c in Capability.objects.all()]
-        return JsonResponse(caps, safe=False)
+        if not ProblemResolution.objects.exists():
+            ProblemResolution.objects.create(
+                problem_title='Disjointed Enterprise Data Silos',
+                problem_desc='Disjointed database silos across business departments causing synchronization lags, manual double-entry errors, and inconsistent reporting.',
+                resolution_title='Unified Corporate ERP Core',
+                resolution_desc='A single, central database engine integrating all financial, HR, logistics, and billing pipelines into a unified real-time ledger.',
+                stats='100% Data Integrity',
+                latency='Real-time Sync'
+            )
+            ProblemResolution.objects.create(
+                problem_title='High-Concurrency Query Bottlenecks',
+                problem_desc='Primary database structures bottlenecking under high concurrency loads, resulting in page timeouts and slow lookup queries.',
+                resolution_title='Distributed Multi-Region Cache Mesh',
+                resolution_desc='Deploying optimized Redis edge nodes globally to intercept read queries and resolve lookups instantly with minimal server load.',
+                stats='99.9% Cache Hit Rate',
+                latency='< 10ms Latency'
+            )
+            ProblemResolution.objects.create(
+                problem_title='Customer Support Operations Lags',
+                problem_desc='Customer support teams overwhelmed by high volumes of repetitive inquiries, delaying critical technical support responses.',
+                resolution_title='AI Neural Conversational Agent',
+                resolution_desc='Embedding semantic LLM assistant nodes trained on product documentation to instantly resolve standard inquiries 24/7.',
+                stats='85% Case Deflection',
+                latency='Instant Response'
+            )
+
+        probs = [to_dict(p) for p in ProblemResolution.objects.all()]
+        return JsonResponse(probs, safe=False)
 
     elif request.method == 'POST':
         try:
             body = json.loads(request.body)
-            new_cap = Capability.objects.create(
-                title=body.get('title', ''),
-                description=body.get('description', ''),
-                progress=int(body.get('progress', 80))
+            new_prob = ProblemResolution.objects.create(
+                problem_title=body.get('problem_title', ''),
+                problem_desc=body.get('problem_desc', ''),
+                resolution_title=body.get('resolution_title', ''),
+                resolution_desc=body.get('resolution_desc', ''),
+                stats=body.get('stats', ''),
+                latency=body.get('latency', '')
             )
-            return JsonResponse(to_dict(new_cap), status=201)
+            return JsonResponse(to_dict(new_prob), status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
@@ -164,13 +197,16 @@ def api_capabilities(request, item_id=None):
             return JsonResponse({'error': 'ID required for update'}, status=400)
         try:
             body = json.loads(request.body)
-            cap = Capability.objects.get(id=item_id)
-            cap.title = body.get('title', cap.title)
-            cap.description = body.get('description', cap.description)
-            cap.progress = int(body.get('progress', cap.progress))
-            cap.save()
-            return JsonResponse(to_dict(cap))
-        except Capability.DoesNotExist:
+            prob = ProblemResolution.objects.get(id=item_id)
+            prob.problem_title = body.get('problem_title', prob.problem_title)
+            prob.problem_desc = body.get('problem_desc', prob.problem_desc)
+            prob.resolution_title = body.get('resolution_title', prob.resolution_title)
+            prob.resolution_desc = body.get('resolution_desc', prob.resolution_desc)
+            prob.stats = body.get('stats', prob.stats)
+            prob.latency = body.get('latency', prob.latency)
+            prob.save()
+            return JsonResponse(to_dict(prob))
+        except ProblemResolution.DoesNotExist:
             return JsonResponse({'error': 'Not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
@@ -179,10 +215,10 @@ def api_capabilities(request, item_id=None):
         if not item_id:
             return JsonResponse({'error': 'ID required for delete'}, status=400)
         try:
-            cap = Capability.objects.get(id=item_id)
-            cap.delete()
+            prob = ProblemResolution.objects.get(id=item_id)
+            prob.delete()
             return JsonResponse({'success': True})
-        except Capability.DoesNotExist:
+        except ProblemResolution.DoesNotExist:
             return JsonResponse({'error': 'Not found'}, status=404)
 
     return HttpResponseNotAllowed(['GET', 'POST', 'PUT', 'DELETE'])
@@ -398,7 +434,6 @@ def api_seed(request):
         try:
             # Clear existing records
             Service.objects.all().delete()
-            Capability.objects.all().delete()
             Project.objects.all().delete()
             Career.objects.all().delete()
             Inquiry.objects.all().delete()
@@ -410,7 +445,9 @@ def api_seed(request):
             about_obj = About.objects.create(
                 mission="To architect scalable, high-performance digital matrices that empower global enterprises through precision technology.",
                 vision="To set the absolute standard for immersive, highly kinetic, interactive web experiences and cognitive platforms.",
-                history="Founded in 2026, AURA began as an experimental laboratory dedicated to exploring dynamic scroll pipelines. Today, we deliver state-of-the-art computational infrastructure for fortune 500 tech companies."
+                who_we_are="Zenelait Infotech specializes in building custom software products that empower startups, SMEs, and large enterprises. We bridge the gap between complex business challenges and innovative technology solutions.",
+                commitment="Our focus is on delivering high quality development, timely delivery, and long term support. As a trusted product based organization, we ensure that every solution we build from ERP systems to mobile applications is engineered to absorb massive concurrency and scale effortlessly.",
+                values="Engineered with uncompromising precision. We value bulletproof safety, high concurrency, clean procedural pipelines, and high-fidelity aesthetics across every system."
             )
             TeamMember.objects.create(about=about_obj, name='Dr. Helen Vance', role='Chief Technical Architect', bio='Former infrastructure lead at NASA, specialized in procedural rendering and lattice math.')
             TeamMember.objects.create(about=about_obj, name='Marcus Sterling', role='Head of AI Systems', bio='Pioneered early neural routing matrix setups and natural language agent scaling.')
@@ -421,12 +458,6 @@ def api_seed(request):
             Service.objects.create(title='Learning Management System (LMS)', description='Host premium gamified educational courses, track corporate training progressions, and manage instant skills certifications.', icon='Layers')
             Service.objects.create(title='Smart Billing Software', description='Configure automated subscription tiers, handle complex multi-currency tax calculations, and secure active financial routing.', icon='Terminal')
             Service.objects.create(title='Cognitive AI Chatbots', description='Deploy deep semantic processing neural agents to resolve user inquiries 24/7 and route specialized cases dynamically.', icon='Compass')
-
-            # Seed Capabilities
-            Capability.objects.create(title='High-Frequency Ledgers', description='Processing over 100k transactions per second with sub-millisecond encryption security sweeps.', progress=95)
-            Capability.objects.create(title='NLP Semantic Routing', description='Advanced conversational engines parsing multi-lingual intents with 98.7% accuracy rates.', progress=90)
-            Capability.objects.create(title='Procedural Graphics Matrix', description='Compiling high-DPI procedural vector shapes dynamically on standard web canvas frames.', progress=85)
-            Capability.objects.create(title='Distributed Cloud Elasticity', description='Deploying edge nodes globally with auto-scaling metrics responding to microsecond spikes.', progress=98)
 
             # Seed Projects
             Project.objects.create(name='Consolidated Billing Hub', category='Billing', client='5 Schools & 1 College Campus', year='2026', description='Deploys high-frequency automated invoice processing, billing ledgers, and centralized payment terminals.')

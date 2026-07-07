@@ -27,23 +27,25 @@ const AdminDashboard = () => {
 
   // CRUD Data State (Safeguarded against null/undefined LocalStorage returns)
   const [services, setServices] = useState(store.getServices() || []);
-  const [capabilities, setCapabilities] = useState(store.getCapabilities() || []);
   const [projects, setProjects] = useState(store.getProjects() || []);
   const [careers, setCareers] = useState(store.getCareers() || []);
   const [inquiries, setInquiries] = useState(store.getInquiries() || []);
   const [testimonials, setTestimonials] = useState(store.getTestimonials() || []);
-  const [about, setAbout] = useState(store.getAbout() || { mission: '', vision: '', history: '', team: [] });
+  const [about, setAbout] = useState(store.getAbout() || { mission: '', vision: '', who_we_are: '', commitment: '', values: '', team: [] });
+  const [problems, setProblems] = useState(store.getProblems() || []);
 
   // About Page Forms State
-  const [aboutTexts, setAboutTexts] = useState({ mission: '', vision: '', history: '' });
+  const [aboutTexts, setAboutTexts] = useState({ mission: '', vision: '', who_we_are: '', commitment: '', values: '' });
 
   // Sync About page fields
   useEffect(() => {
-    const data = store.getAbout() || { mission: '', vision: '', history: '', team: [] };
+    const data = store.getAbout() || { mission: '', vision: '', who_we_are: '', commitment: '', values: '', team: [] };
     setAboutTexts({
       mission: data.mission || '',
       vision: data.vision || '',
-      history: data.history || ''
+      who_we_are: data.who_we_are || '',
+      commitment: data.commitment || '',
+      values: data.values || ''
     });
   }, [about]);
 
@@ -163,12 +165,12 @@ Status: SECURED APPLICANT DATA NODE
   useEffect(() => {
     const syncData = () => {
       setServices(store.getServices() || []);
-      setCapabilities(store.getCapabilities() || []);
       setProjects(store.getProjects() || []);
       setCareers(store.getCareers() || []);
       setInquiries(store.getInquiries() || []);
       setTestimonials(store.getTestimonials() || []);
-      setAbout(store.getAbout() || { mission: '', vision: '', history: '', team: [] });
+      setAbout(store.getAbout() || { mission: '', vision: '', who_we_are: '', commitment: '', values: '', team: [] });
+      setProblems(store.getProblems() || []);
     };
     window.addEventListener('aura_store_update', syncData);
     return () => window.removeEventListener('aura_store_update', syncData);
@@ -211,10 +213,10 @@ Status: SECURED APPLICANT DATA NODE
       } else {
         setModalActiveTab(activeTab);
         if (activeTab === 'services') setFormData({ title: '', description: '', icon: 'Cpu' });
-        else if (activeTab === 'capabilities') setFormData({ title: '', description: '', progress: 80 });
         else if (activeTab === 'projects') setFormData({ name: '', category: 'ERP', client: '', year: '2026', description: '' });
         else if (activeTab === 'careers') setFormData({ title: '', department: 'Engineering', salary: '', description: '', requirements: '' });
         else if (activeTab === 'testimonials') setFormData({ name: '', role: '', content: '', rating: 5, avatar: '' });
+        else if (activeTab === 'problems') setFormData({ problem_title: '', problem_desc: '', resolution_title: '', resolution_desc: '', stats: '', latency: '' });
       }
     }
     setModalOpen(true);
@@ -227,9 +229,6 @@ Status: SECURED APPLICANT DATA NODE
     if (modalActiveTab === 'services') {
       if (editingId) store.updateService(editingId, formData);
       else store.addService(formData);
-    } else if (modalActiveTab === 'capabilities') {
-      if (editingId) store.updateCapability(editingId, formData);
-      else store.addCapability(formData);
     } else if (modalActiveTab === 'projects') {
       if (editingId) store.updateProject(editingId, formData);
       else store.addProject(formData);
@@ -251,6 +250,9 @@ Status: SECURED APPLICANT DATA NODE
       const toSave = { ...formData, avatar: initAv };
       if (editingId) store.updateTestimonial(editingId, toSave);
       else store.addTestimonial(toSave);
+    } else if (modalActiveTab === 'problems') {
+      if (editingId) store.updateProblem(editingId, formData);
+      else store.addProblem(formData);
     }
 
     setModalOpen(false);
@@ -266,7 +268,9 @@ Status: SECURED APPLICANT DATA NODE
       ...currentAbout,
       mission: aboutTexts.mission,
       vision: aboutTexts.vision,
-      history: aboutTexts.history
+      who_we_are: aboutTexts.who_we_are,
+      commitment: aboutTexts.commitment,
+      values: aboutTexts.values
     };
     store.updateAbout(updatedAbout);
     alert('About page core texts successfully committed to public store.');
@@ -282,11 +286,11 @@ Status: SECURED APPLICANT DATA NODE
       store.updateAbout({ ...currentAbout, team: updatedTeam });
     } else {
       if (activeTab === 'services') store.deleteService(id);
-      else if (activeTab === 'capabilities') store.deleteCapability(id);
       else if (activeTab === 'projects') store.deleteProject(id);
       else if (activeTab === 'careers') store.deleteCareer(id);
       else if (activeTab === 'inquiries') store.deleteInquiry(id);
       else if (activeTab === 'testimonials') store.deleteTestimonial(id);
+      else if (activeTab === 'problems') store.deleteProblem(id);
     }
   };
 
@@ -765,10 +769,10 @@ Status: SECURED APPLICANT DATA NODE
   // Active dataset variables for lists
   const activeDataset =
     activeTab === 'services' ? services :
-      activeTab === 'capabilities' ? capabilities :
-        activeTab === 'projects' ? projects :
+      activeTab === 'projects' ? projects :
           activeTab === 'careers' ? careers :
-            activeTab === 'testimonials' ? testimonials : [];
+            activeTab === 'testimonials' ? testimonials :
+              activeTab === 'problems' ? problems : [];
 
   return (
     <div className="admin-console-wrapper">
@@ -789,13 +793,7 @@ Status: SECURED APPLICANT DATA NODE
               <span>Core Services</span>
             </button>
 
-            <button
-              className={`nav-tab-btn ${activeTab === 'capabilities' ? 'active' : ''}`}
-              onClick={() => setActiveTab('capabilities')}
-            >
-              <Terminal size={16} />
-              <span>Capabilities</span>
-            </button>
+
 
             <button
               className={`nav-tab-btn ${activeTab === 'projects' ? 'active' : ''}`}
@@ -819,6 +817,14 @@ Status: SECURED APPLICANT DATA NODE
             >
               <Info size={16} />
               <span>About Us Page</span>
+            </button>
+
+            <button
+              className={`nav-tab-btn ${activeTab === 'problems' ? 'active' : ''}`}
+              onClick={() => setActiveTab('problems')}
+            >
+              <ShieldAlert size={16} />
+              <span>Problems & Resolutions</span>
             </button>
 
             <button
@@ -853,12 +859,12 @@ Status: SECURED APPLICANT DATA NODE
               <span className="workspace-badge">ADMIN CONTROL SHELL</span>
               <h1 className="workspace-title font-display">
                 {activeTab === 'services' && 'Manage Public Services'}
-                {activeTab === 'capabilities' && 'Manage Technical Capabilities'}
                 {activeTab === 'projects' && 'Manage Showcase Projects'}
                 {activeTab === 'careers' && 'Manage Career Opportunities'}
                 {activeTab === 'about' && 'About Us Content Manager'}
                 {activeTab === 'inquiries' && 'Inquiries Inbox Manager'}
                 {activeTab === 'testimonials' && 'Client Reviews Manager'}
+                {activeTab === 'problems' && 'Manage Problems & Resolutions'}
               </h1>
               <p className="workspace-desc text-muted">
                 Create, read, update, and delete active frontend database records stored persistent in memory.
@@ -901,13 +907,33 @@ Status: SECURED APPLICANT DATA NODE
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label>History & Philosophy Context</label>
+                   <div className="form-group">
+                    <label>Who We Are Context</label>
                     <textarea
-                      rows="4"
+                      rows="3"
                       required
-                      value={aboutTexts.history}
-                      onChange={(e) => setAboutTexts({ ...aboutTexts, history: e.target.value })}
+                      value={aboutTexts.who_we_are}
+                      onChange={(e) => setAboutTexts({ ...aboutTexts, who_we_are: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Our Commitment Context</label>
+                    <textarea
+                      rows="3"
+                      required
+                      value={aboutTexts.commitment}
+                      onChange={(e) => setAboutTexts({ ...aboutTexts, commitment: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Product Values Context</label>
+                    <textarea
+                      rows="3"
+                      required
+                      value={aboutTexts.values}
+                      onChange={(e) => setAboutTexts({ ...aboutTexts, values: e.target.value })}
                     />
                   </div>
 
@@ -916,49 +942,40 @@ Status: SECURED APPLICANT DATA NODE
                     <CheckCircle size={14} />
                   </button>
                 </form>
+              </div>
+            ) : activeTab === 'problems' ? (
+              /* Problems & Resolutions list layout */
+              <div className="console-data-grid">
+                {problems.map((prob) => (
+                  <div key={prob.id} className="glass-card console-data-card">
+                    <div className="card-top-id">
+                      <span className="card-packet-id">PROBLEM ID: {prob.id}</span>
+                      <span className="card-pill">{prob.stats}</span>
+                    </div>
 
-                <div className="about-team-cms">
-                  <div className="team-header-row">
-                    <h3 className="form-section-title font-display">Manage Team Architects</h3>
-                    <button className="glow-btn add-member-btn" onClick={() => openModal(null, true)}>
-                      <Plus size={14} />
-                      <span>Add Member</span>
-                    </button>
+                    <h3 className="card-headline font-display">
+                      {prob.problem_title}
+                    </h3>
+
+                    <p className="card-excerpt">
+                      <strong>Resolution:</strong> {prob.resolution_title} ({prob.latency})<br/>
+                      {prob.problem_desc}
+                    </p>
+
+                    <div className="card-crud-actions">
+                      <button className="crud-action-btn edit-btn" onClick={() => openModal(prob)}>
+                        <Edit size={12} />
+                        <span>Edit</span>
+                      </button>
+                      <button className="crud-action-btn delete-btn" onClick={() => handleDeleteItem(prob.id)}>
+                        <Trash2 size={12} />
+                        <span>Delete</span>
+                      </button>
+                    </div>
                   </div>
-
-                  <div className="console-data-grid">
-                    {about.team && about.team.map((member) => (
-                      <div key={member.id} className="glass-card console-data-card">
-                        <div className="card-top-id">
-                          <span className="card-packet-id">ARCHITECT ID: {member.id}</span>
-                          <span className="card-pill">{member.role}</span>
-                        </div>
-
-                        <h3 className="card-headline font-display">
-                          {member.name}
-                        </h3>
-
-                        <p className="card-excerpt">
-                          {member.bio}
-                        </p>
-
-                        <div className="card-crud-actions">
-                          <button className="crud-action-btn edit-btn" onClick={() => openModal(member, true)}>
-                            <Edit size={12} />
-                            <span>Edit</span>
-                          </button>
-                          <button className="crud-action-btn delete-btn" onClick={() => handleDeleteItem(member.id, true)}>
-                            <Trash2 size={12} />
-                            <span>Delete</span>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             ) : activeTab === 'inquiries' ? (
-              /* Inquiries Inbox listing layout */
               <div className="inbox-inquiries-list">
                 {inquiries.length === 0 ? (
                   <div className="empty-state glass-panel">
@@ -1109,40 +1126,6 @@ Status: SECURED APPLICANT DATA NODE
                 </>
               )}
 
-              {/* CAPABILITIES FIELDS */}
-              {modalActiveTab === 'capabilities' && (
-                <>
-                  <div className="form-group">
-                    <label>Capability Label</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.title || ''}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Metrics Percentage Gauge (0-100)</label>
-                    <input
-                      type="number"
-                      required
-                      min="0"
-                      max="100"
-                      value={formData.progress || ''}
-                      onChange={(e) => setFormData({ ...formData, progress: Number(e.target.value) })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Metrics Scope Description</label>
-                    <textarea
-                      rows="3"
-                      required
-                      value={formData.description || ''}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    ></textarea>
-                  </div>
-                </>
-              )}
 
               {/* PROJECTS FIELDS */}
               {modalActiveTab === 'projects' && (
@@ -1252,36 +1235,66 @@ Status: SECURED APPLICANT DATA NODE
                 </>
               )}
 
-              {/* ABOUT TEAM FIELDS */}
-              {modalActiveTab === 'about_team' && (
+              {/* PROBLEMS FIELDS */}
+              {modalActiveTab === 'problems' && (
                 <>
                   <div className="form-group">
-                    <label>Architect Full Name</label>
+                    <label>Friction Point (Problem Title)</label>
                     <input
                       type="text"
                       required
-                      value={formData.name || ''}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      value={formData.problem_title || ''}
+                      onChange={(e) => setFormData({ ...formData, problem_title: e.target.value })}
                     />
                   </div>
                   <div className="form-group">
-                    <label>Role / Position Title</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Lead Creative Architect"
-                      value={formData.role || ''}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Biography Summary</label>
+                    <label>Friction Description (Problem Details)</label>
                     <textarea
                       rows="3"
                       required
-                      value={formData.bio || ''}
-                      onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                      value={formData.problem_desc || ''}
+                      onChange={(e) => setFormData({ ...formData, problem_desc: e.target.value })}
                     ></textarea>
+                  </div>
+                  <div className="form-group">
+                    <label>Engineered Resolution Title</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.resolution_title || ''}
+                      onChange={(e) => setFormData({ ...formData, resolution_title: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Resolution Description (Details)</label>
+                    <textarea
+                      rows="3"
+                      required
+                      value={formData.resolution_desc || ''}
+                      onChange={(e) => setFormData({ ...formData, resolution_desc: e.target.value })}
+                    ></textarea>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group half-width">
+                      <label>Efficacy Coefficient (Stats)</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="100% Data Integrity"
+                        value={formData.stats || ''}
+                        onChange={(e) => setFormData({ ...formData, stats: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-group half-width">
+                      <label>Synchronicity (Latency)</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Real-time Sync"
+                        value={formData.latency || ''}
+                        onChange={(e) => setFormData({ ...formData, latency: e.target.value })}
+                      />
+                    </div>
                   </div>
                 </>
               )}

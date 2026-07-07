@@ -100,7 +100,7 @@ const FooterSection = () => {
               <a href="#" className="footer-logo">
                 <img src="/logo1.png" alt="Zenelait Infotech" className="footer-logo-img" />
               </a>
-              <p className="footer-tagline">
+              <p className="footer-tagline" style={{textAlign:'justify'}}>
                 Zenelait Infotech is a leading product-based IT company in Anna Nagar, Chennai, specializing in ERP, LMS, CRM, and bespoke digital solutions for businesses of all sizes.
               </p>
             </div>
@@ -142,33 +142,33 @@ const FooterSection = () => {
                 </a>
               </div>
             </div>
-          </div>
+        </div>
+      </div>
 
-          <div className="footer-bottom">
-            <span className="footer-copyright">
-              © {new Date().getFullYear()} Zenelait Infotech. All rights reserved.
-            </span>
+      <div className="footer-bottom-bar">
+          <div className="container">
+            <div className="footer-bottom">
+              <span className="footer-copyright">
+                © {new Date().getFullYear()} Zenelait Infotech. All rights reserved.
+              </span>
 
-            {/* Social Icons */}
-            <div className="footer-socials">
-              <a href="https://www.linkedin.com/company/zenelatit-info-tech/?originalSubdomain=in" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn">
-                <LinkedinIcon size={18} />
-              </a>
-              <a href="https://www.facebook.com/p/Zenelait-Info-Tech-61582899936644/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Facebook">
-                <FacebookIcon size={18} />
-              </a>
-              {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Twitter">
-                <TwitterIcon size={18} />
-              </a> */}
-              <a href="https://www.instagram.com/zenelait_infotech/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Instagram">
-                <InstagramIcon size={18} />
-              </a>
-              <a href="https://wa.me/919884264816" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="WhatsApp">
-                <WhatsappIcon size={18} />
-              </a>
+              {/* Social Icons */}
+              <div className="footer-socials">
+                <a href="https://www.linkedin.com/company/zenelatit-info-tech/?originalSubdomain=in" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="LinkedIn">
+                  <LinkedinIcon size={18} />
+                </a>
+                <a href="https://www.facebook.com/p/Zenelait-Info-Tech-61582899936644/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Facebook">
+                  <FacebookIcon size={18} />
+                </a>
+                <a href="https://www.instagram.com/zenelait_infotech/" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="Instagram">
+                  <InstagramIcon size={18} />
+                </a>
+                <a href="https://wa.me/919884264816" target="_blank" rel="noopener noreferrer" className="social-icon-btn" aria-label="WhatsApp">
+                  <WhatsappIcon size={18} />
+                </a>
+              </div>
             </div>
           </div>
-
         </div>
       </footer>
 
@@ -305,7 +305,7 @@ const FooterSection = () => {
           position: relative;
           background-color: rgba(143, 143, 142, 0.14);
           border-top: 1px solid rgba(255, 255, 255, 0.03);
-          padding: 6rem 0 3rem 0;
+          padding: 6rem 0 0 0;
           z-index: 15;
         }
 
@@ -404,12 +404,16 @@ const FooterSection = () => {
           margin-top: 0.15rem;
         }
 
+        .footer-bottom-bar {
+          background-color: #000000;
+          border-top: 1px solid rgba(255, 255, 255, 0.03);
+          padding: 2rem 0;
+        }
+
         .footer-bottom {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.03);
           gap: 2rem;
         }
 

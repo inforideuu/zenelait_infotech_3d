@@ -117,6 +117,7 @@ const StatsSection = () => {
       desc: "High-performance operational hubs customized securely.",
       icon: <Award size={20} />,
       color: "rgba(0, 242, 254, 0.4)",
+      hoverBg: "rgba(10, 224, 228, 0.96)",
       badgeClass: "primary-badge"
     },
     {
@@ -126,6 +127,7 @@ const StatsSection = () => {
       desc: "Delivering unmatched digital reliability across sectors.",
       icon: <Heart size={20} />,
       color: "rgba(79, 172, 254, 0.4)",
+      hoverBg: "rgba(250, 129, 29, 1)",
       badgeClass: "secondary-badge"
     },
     {
@@ -135,6 +137,7 @@ const StatsSection = () => {
       desc: "Trusted by leading business organizations globally.",
       icon: <Handshake size={20} />,
       color: "rgba(170, 59, 255, 0.4)",
+      hoverBg: "rgba(224, 42, 176, 0.94)",
       badgeClass: "accent-badge"
     },
     {
@@ -144,6 +147,7 @@ const StatsSection = () => {
       desc: "Active clients interacting with our system frameworks.",
       icon: <Users size={20} />,
       color: "rgba(16, 185, 129, 0.4)",
+      hoverBg: "rgba(11, 241, 142, 0.94)",
       badgeClass: "success-badge"
     }
   ];
@@ -176,6 +180,7 @@ const StatsSection = () => {
             <div key={i} ref={stat.ref} className="perspective-wrapper">
               <div
                 className="glass-card stat-metric-card"
+                style={{ '--hover-bg': stat.hoverBg }}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={() => setHoveredCardIndex(i)}
                 onMouseLeave={(e) => { handleMouseLeave(e); setHoveredCardIndex(null); }}
@@ -306,7 +311,12 @@ const StatsSection = () => {
           overflow: hidden;
           height: 100%;
           box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-          transition: border-color 0.3s ease;
+          transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-metric-card:hover {
+          background: var(--hover-bg);
+          border-color: rgba(255, 255, 255, 0.15);
         }
 
         .stat-card-spotlight {
@@ -351,10 +361,11 @@ const StatsSection = () => {
         }
 
         .stat-metric-card:hover .stat-giant-num {
-          background: linear-gradient(135deg, #ffffff 10%, var(--primary) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 20px rgba(0,242,254,0.3));
+          background: none;
+          -webkit-background-clip: initial;
+          -webkit-text-fill-color: #0b0f19;
+          color: #0b0f19;
+          filter: none;
           transform: translateZ(65px);
         }
 
@@ -369,12 +380,22 @@ const StatsSection = () => {
           font-size: 1.25rem;
           font-weight: 700;
           color: #ffffff;
+          transition: color 0.3s ease;
+        }
+
+        .stat-metric-card:hover .stat-label {
+          color: #0b0f19;
         }
 
         .stat-desc {
           font-size: 1.3rem;
           line-height: 1.5;
           color: var(--text-secondary);
+          transition: color 0.3s ease;
+        }
+
+        .stat-metric-card:hover .stat-desc {
+          color: rgba(11, 15, 25, 0.85);
         }
 
         .stat-card-highlight-bar {

@@ -13,7 +13,7 @@ const FeatureShowcase = () => {
       icon: <Users className="spec-icon" size={24} />,
       title: "Customer Relationship Management (CRM)",
       subtitle: "Synchronized pipeline automation",
-      desc: "Track lifecycle engagement points, map customer pipeline arrays, and automate client relations with secure data architectures.",
+      desc: "Track lifecycle engagement points, map customer pipeline arrays, and automate client relations with secure data and data architectures.",
       glowColor: "rgba(0, 242, 254, 0.4)"
     },
     {
@@ -48,7 +48,7 @@ const FeatureShowcase = () => {
       icon: <Bot className="spec-icon" size={24} />,
       title: "AI Chatbox",
       subtitle: "Neural conversational engines",
-      desc: "Integrate LLM processing nodes to reply, recommend, and resolve client inquiries in real-time with continuous neural learning.",
+      desc: "Integrate LLM processing nodes to reply, recommend, and resolve client inquiries in real-time with the continuous neural learning.",
       glowColor: "rgba(245, 158, 11, 0.4)"
     }
   ];
@@ -173,7 +173,7 @@ const FeatureShowcase = () => {
                   <span className="spec-subtitle">{spec.subtitle}</span>
                 </div>
 
-                <p className="spec-desc">{spec.desc}</p>
+                <p className="spec-desc" style={{textAlign:"left"}}>{spec.desc}</p>
               </div>
             </div>
           ))}

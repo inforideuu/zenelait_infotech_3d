@@ -1,15 +1,15 @@
 // Unified Asynchronous REST API Bridge & Sync Engine with MySQL Backend
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://zenelait-backend.onrender.com/api';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || (import.meta.env.DEV ? 'http://127.0.0.1:8000/api' : 'https://zenelait-backend.onrender.com/api');
 
 const STORAGE_KEYS = {
   ABOUT: 'aura_cms_about',
   SERVICES: 'aura_cms_services',
-  CAPABILITIES: 'aura_cms_capabilities',
   PROJECTS: 'aura_cms_projects',
   CAREERS: 'aura_cms_careers',
   INQUIRIES: 'aura_cms_inquiries',
-  TESTIMONIALS: 'aura_cms_testimonials'
+  TESTIMONIALS: 'aura_cms_testimonials',
+  PROBLEMS: 'aura_cms_problems'
 };
 
 // Background sync function to fetch all latest data from Django + MySQL
@@ -18,11 +18,11 @@ export const syncAllFromBackend = async () => {
     const endpoints = {
       ABOUT: 'about/',
       SERVICES: 'services/',
-      CAPABILITIES: 'capabilities/',
       PROJECTS: 'projects/',
       CAREERS: 'careers/',
       INQUIRIES: 'inquiries/',
-      TESTIMONIALS: 'testimonials/'
+      TESTIMONIALS: 'testimonials/',
+      PROBLEMS: 'problems/'
     };
 
     const fetchPromises = Object.entries(endpoints).map(async ([key, path]) => {
@@ -50,7 +50,7 @@ setInterval(syncAllFromBackend, 15000);
 export const store = {
   // 1. ABOUT CMS Methods
   getAbout: () => {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.ABOUT)) || { mission: '', vision: '', history: '', team: [] };
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.ABOUT)) || { mission: '', vision: '', who_we_are: '', commitment: '', values: '', team: [] };
   },
   updateAbout: async (updatedAbout) => {
     try {
@@ -106,51 +106,6 @@ export const store = {
   deleteService: async (id) => {
     try {
       const response = await fetch(`${BACKEND_URL}/services/${id}/`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        await syncAllFromBackend();
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  },
-
-  // 3. CAPABILITIES CRUD Methods
-  getCapabilities: () => {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.CAPABILITIES)) || [];
-  },
-  addCapability: async (cap) => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/capabilities/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cap)
-      });
-      if (response.ok) {
-        await syncAllFromBackend();
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  },
-  updateCapability: async (id, updatedCap) => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/capabilities/${id}/`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedCap)
-      });
-      if (response.ok) {
-        await syncAllFromBackend();
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  },
-  deleteCapability: async (id) => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/capabilities/${id}/`, {
         method: 'DELETE'
       });
       if (response.ok) {
@@ -329,7 +284,52 @@ export const store = {
     }
   },
 
-  // 8. Auth Methods
+  // 8. PROBLEMS CRUD Methods
+  getProblems: () => {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.PROBLEMS)) || [];
+  },
+  addProblem: async (prob) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/problems/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(prob)
+      });
+      if (response.ok) {
+        await syncAllFromBackend();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  updateProblem: async (id, updatedProb) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/problems/${id}/`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProb)
+      });
+      if (response.ok) {
+        await syncAllFromBackend();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  deleteProblem: async (id) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/problems/${id}/`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        await syncAllFromBackend();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  // 9. Auth Methods
   login: async (username, password) => {
     const response = await fetch(`${BACKEND_URL}/login/`, {
       method: 'POST',

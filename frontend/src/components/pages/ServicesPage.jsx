@@ -220,13 +220,13 @@ const ServicesPage = () => {
           gap: 6rem;
           position: relative;
           z-index: 1;
-          margin-bottom: 6rem;
+          margin-bottom: 3rem;
         }
 
         .service-zigzag-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 4rem;
+          gap: 6rem;
           align-items: center;
           transition: all 0.4s ease;
         }

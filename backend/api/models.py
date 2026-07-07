@@ -3,7 +3,9 @@ from django.db import models
 class About(models.Model):
     mission = models.TextField()
     vision = models.TextField()
-    history = models.TextField()
+    who_we_are = models.TextField(default="Zenelait Infotech specializes in building custom software products that empower startups, SMEs, and large enterprises. We bridge the gap between complex business challenges and innovative technology solutions.")
+    commitment = models.TextField(default="Our focus is on delivering high quality development, timely delivery, and long term support. As a trusted product based organization, we ensure that every solution we build from ERP systems to mobile applications is engineered to absorb massive concurrency and scale effortlessly.")
+    values = models.TextField(default="Engineered with uncompromising precision. We value bulletproof safety, high concurrency, clean procedural pipelines, and high-fidelity aesthetics across every system.")
 
     def __str__(self):
         return "About Us Page Content"
@@ -25,13 +27,7 @@ class Service(models.Model):
     def __str__(self):
         return self.title
 
-class Capability(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    progress = models.IntegerField(default=80)
 
-    def __str__(self):
-        return self.title
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
@@ -88,4 +84,15 @@ class OtpCode(models.Model):
 
     def __str__(self):
         return f"OTP {self.code} for {self.phone_number}"
+
+class ProblemResolution(models.Model):
+    problem_title = models.CharField(max_length=255)
+    problem_desc = models.TextField()
+    resolution_title = models.CharField(max_length=255)
+    resolution_desc = models.TextField()
+    stats = models.CharField(max_length=100)
+    latency = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.problem_title
 
