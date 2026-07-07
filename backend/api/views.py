@@ -14,12 +14,14 @@ def to_dict(model_obj):
         return {}
     data = {}
     for field in model_obj._meta.fields:
-        val = getattr(model_obj, field.name)
-        # Handle datetime serialization
-        if hasattr(val, 'isoformat'):
-            data[field.name] = val.isoformat()
+        if field.is_relation:
+            data[field.name] = getattr(model_obj, field.attname)
         else:
-            data[field.name] = val
+            val = getattr(model_obj, field.name)
+            if hasattr(val, 'isoformat'):
+                data[field.name] = val.isoformat()
+            else:
+                data[field.name] = val
     return data
 
 @csrf_exempt
