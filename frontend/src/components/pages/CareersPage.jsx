@@ -23,7 +23,7 @@ const CareersPage = () => {
       name: applyForm.name,
       email: applyForm.email,
       resume: applyForm.resume,
-      message: `[CAREER APPLICATION: ${selectedJob.title}]\nResume/Links: ${applyForm.resume}\nCover Note: ${applyForm.message}`
+      message: `[CAREER APPLICATION: ${selectedJob.title}]\nResume/Links: ${resumeFileName}\nCover Note: ${applyForm.message}`
     });
 
     setApplySuccess(true);
