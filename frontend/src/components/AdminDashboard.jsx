@@ -1352,76 +1352,88 @@ Status: SECURED APPLICANT DATA NODE
               <button className="modal-close-btn" onClick={() => setViewingResume(null)}>×</button>
             </div>
 
-            <div className="resume-document-canvas">
-              {/* Holographic Header */}
-              <div className="resume-doc-header">
-                <h2 className="doc-name font-display">{viewingResume.name}</h2>
-                <div className="doc-meta-row">
-                  <span>EMAIL: {viewingResume.email}</span>
-                  <span>STATUS: SECURE DATA NODE</span>
-                </div>
-              </div>
-
-              <div className="resume-divider"></div>
-
-              {/* Resume simulated sections */}
-              <div className="resume-section">
-                <h4 className="resume-sec-title font-display">PROPOSED ROLE</h4>
-                <p className="resume-sec-content">
-                  {viewingResume.message && viewingResume.message.includes('[CAREER APPLICATION:')
-                    ? viewingResume.message.split(']')[0].replace('[CAREER APPLICATION:', '').trim()
-                    : 'System Architecture Engineer'}
-                </p>
-              </div>
-
-              <div className="resume-section">
-                <h4 className="resume-sec-title font-display">TECHNICAL MATRIX SKILLS</h4>
-                <div className="resume-skills-tags">
-                  <span className="skill-tag">React.js & Three.js</span>
-                  <span className="skill-tag">WebGL / GLSL</span>
-                  <span className="skill-tag">Node.js API Architecture</span>
-                  <span className="skill-tag">Neural Computing</span>
-                  <span className="skill-tag">Distributed Systems</span>
-                </div>
-              </div>
-
-              <div className="resume-section">
-                <h4 className="resume-sec-title font-display">PROFESSIONAL EXPERIENCE INDEX</h4>
-                <div className="resume-exp-item">
-                  <div className="exp-meta">
-                    <strong>Senior Architecture Director</strong>
-                    <span>2024 - PRESENT</span>
+            <div className="resume-document-canvas" style={viewingResume.resume.startsWith('data:') ? { padding: 0, height: '500px' } : {}}>
+              {viewingResume.resume && viewingResume.resume.startsWith('data:') ? (
+                <iframe
+                  src={viewingResume.resume}
+                  width="100%"
+                  height="100%"
+                  title="Resume PDF Viewer"
+                  style={{ border: 'none', borderRadius: '8px', background: '#0a0a0f' }}
+                />
+              ) : (
+                <>
+                  {/* Holographic Header */}
+                  <div className="resume-doc-header">
+                    <h2 className="doc-name font-display">{viewingResume.name}</h2>
+                    <div className="doc-meta-row">
+                      <span>EMAIL: {viewingResume.email}</span>
+                      <span>STATUS: SECURE DATA NODE</span>
+                    </div>
                   </div>
-                  <p className="exp-desc">
-                    Engineered premium dynamic browser portals and managed low-latency web matrix nodes.
-                  </p>
-                </div>
-                <div className="resume-exp-item" style={{ marginTop: '0.75rem' }}>
-                  <div className="exp-meta">
-                    <strong>WebGL Developer</strong>
-                    <span>2021 - 2024</span>
-                  </div>
-                  <p className="exp-desc">
-                    Constructed 3D user interfaces with real-time mouse coordinate tilt vectors.
-                  </p>
-                </div>
-              </div>
 
-              <div className="resume-section">
-                <h4 className="resume-sec-title font-display">ATTACHED DOCUMENTATION</h4>
-                <div className="resume-file-attachment">
-                  <FileText size={16} />
-                  <span>{viewingResume.resume.startsWith('data:') ? 'Uploaded_Resume.pdf' : viewingResume.resume}</span>
-                  <span className="attachment-size">(1.8 MB - Cryptographic Signed PDF)</span>
-                </div>
-              </div>
+                  <div className="resume-divider"></div>
+
+                  {/* Resume simulated sections */}
+                  <div className="resume-section">
+                    <h4 className="resume-sec-title font-display">PROPOSED ROLE</h4>
+                    <p className="resume-sec-content">
+                      {viewingResume.message && viewingResume.message.includes('[CAREER APPLICATION:')
+                        ? viewingResume.message.split(']')[0].replace('[CAREER APPLICATION:', '').trim()
+                        : 'System Architecture Engineer'}
+                    </p>
+                  </div>
+
+                  <div className="resume-section">
+                    <h4 className="resume-sec-title font-display">TECHNICAL MATRIX SKILLS</h4>
+                    <div className="resume-skills-tags">
+                      <span className="skill-tag">React.js & Three.js</span>
+                      <span className="skill-tag">WebGL / GLSL</span>
+                      <span className="skill-tag">Node.js API Architecture</span>
+                      <span className="skill-tag">Neural Computing</span>
+                      <span className="skill-tag">Distributed Systems</span>
+                    </div>
+                  </div>
+
+                  <div className="resume-section">
+                    <h4 className="resume-sec-title font-display">PROFESSIONAL EXPERIENCE INDEX</h4>
+                    <div className="resume-exp-item">
+                      <div className="exp-meta">
+                        <strong>Senior Architecture Director</strong>
+                        <span>2024 - PRESENT</span>
+                      </div>
+                      <p className="exp-desc">
+                        Engineered premium dynamic browser portals and managed low-latency web matrix nodes.
+                      </p>
+                    </div>
+                    <div className="resume-exp-item" style={{ marginTop: '0.75rem' }}>
+                      <div className="exp-meta">
+                        <strong>WebGL Developer</strong>
+                        <span>2021 - 2024</span>
+                      </div>
+                      <p className="exp-desc">
+                        Constructed 3D user interfaces with real-time mouse coordinate tilt vectors.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="resume-section">
+                    <h4 className="resume-sec-title font-display">ATTACHED DOCUMENTATION</h4>
+                    <div className="resume-file-attachment">
+                      <FileText size={16} />
+                      <span>{viewingResume.resume}</span>
+                      <span className="attachment-size">(1.8 MB - Cryptographic Signed PDF)</span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="resume-viewer-actions">
               <button className="glow-btn download-resume-btn" onClick={() => handleDownloadResumeFile(viewingResume)}>
                 <span>DOWNLOAD ORIGINAL TEXT RECORD</span>
               </button>
-              <button className="back-login-btn" style={{ marginTop: 0 }} onClick={() => setViewingResume(null)}>
+              <button className="crud-action-btn edit-btn" style={{ padding: '0.7rem 1.5rem', fontSize: '0.85rem' }} onClick={() => setViewingResume(null)}>
                 Close Viewer
               </button>
             </div>
