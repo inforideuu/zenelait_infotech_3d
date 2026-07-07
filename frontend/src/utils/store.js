@@ -1,6 +1,6 @@
 // Unified Asynchronous REST API Bridge & Sync Engine with MySQL Backend
 
-const BACKEND_URL = 'http://127.0.0.1:8000/api';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://zenelait-backend.onrender.com/api';
 
 const STORAGE_KEYS = {
   ABOUT: 'aura_cms_about',
