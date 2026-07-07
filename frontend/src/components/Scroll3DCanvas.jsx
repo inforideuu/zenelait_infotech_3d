@@ -115,7 +115,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
       {/* Background Autoplay Video */}
       <video
         ref={videoRef}
-        src="/hero.mp4"
+        src="/hero.webm"
         autoPlay
         muted
         loop
