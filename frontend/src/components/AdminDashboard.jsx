@@ -113,6 +113,15 @@ const AdminDashboard = () => {
   };
 
   const handleDownloadResumeFile = (inq) => {
+    if (inq.resume && inq.resume.startsWith('data:')) {
+      const link = document.createElement('a');
+      link.href = inq.resume;
+      link.download = `Resume_${inq.name.replace(/\s+/g, '_')}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return;
+    }
     const resumeText = `======================================================
 ZENELAIT INFOTECH - APPLICANT RESUME SYSTEM RECORD
 ======================================================
@@ -975,11 +984,11 @@ Status: SECURED APPLICANT DATA NODE
                       </div>
                       <p className="inq-msg">{inq.message}</p>
 
-                      {inq.resume && (
+                      {inq.resume && inq.resume.trim() !== '' && (
                         <div className="inquiry-resume-box">
                           <div className="resume-info">
                             <FileText size={16} className="resume-icon" />
-                            <span>{inq.resume}</span>
+                            <span>{inq.resume.startsWith('data:') ? 'Uploaded_Resume.pdf' : inq.resume}</span>
                           </div>
                           <button
                             className="glow-btn view-resume-btn"
@@ -1402,7 +1411,7 @@ Status: SECURED APPLICANT DATA NODE
                 <h4 className="resume-sec-title font-display">ATTACHED DOCUMENTATION</h4>
                 <div className="resume-file-attachment">
                   <FileText size={16} />
-                  <span>{viewingResume.resume}</span>
+                  <span>{viewingResume.resume.startsWith('data:') ? 'Uploaded_Resume.pdf' : viewingResume.resume}</span>
                   <span className="attachment-size">(1.8 MB - Cryptographic Signed PDF)</span>
                 </div>
               </div>
@@ -1464,6 +1473,9 @@ Status: SECURED APPLICANT DATA NODE
           background: rgba(10, 10, 15, 0.9) !important;
           border-color: rgba(0, 242, 254, 0.2) !important;
           box-shadow: 0 0 40px rgba(0, 242, 254, 0.1) !important;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
         }
 
         .resume-modal-header-title {
@@ -1484,6 +1496,8 @@ Status: SECURED APPLICANT DATA NODE
           padding: 2rem;
           margin-bottom: 1.5rem;
           text-align: left;
+          overflow-y: auto;
+          flex-grow: 1;
         }
 
         .resume-doc-header {
@@ -2026,6 +2040,8 @@ Status: SECURED APPLICANT DATA NODE
           display: flex;
           align-items: center;
           justify-content: center;
+          overflow-y: auto;
+          padding: 2rem 0;
         }
 
         .modal-content {
@@ -2035,6 +2051,8 @@ Status: SECURED APPLICANT DATA NODE
           box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
           border-color: rgba(255, 255, 255, 0.08);
           position: relative;
+          max-height: 90vh;
+          overflow-y: auto;
         }
 
         .modal-header {

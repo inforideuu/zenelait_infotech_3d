@@ -6,6 +6,7 @@ const CareersPage = () => {
   const [jobs, setJobs] = useState(store.getCareers());
   const [selectedJob, setSelectedJob] = useState(null);
   const [applyForm, setApplyForm] = useState({ name: '', email: '', resume: '', message: '' });
+  const [resumeFileName, setResumeFileName] = useState('');
   const [applySuccess, setApplySuccess] = useState(false);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const CareersPage = () => {
       setApplySuccess(false);
       setSelectedJob(null);
       setApplyForm({ name: '', email: '', resume: '', message: '' });
+      setResumeFileName('');
     }, 2000);
   };
 
@@ -149,13 +151,18 @@ const CareersPage = () => {
                           onChange={(e) => {
                             const file = e.target.files[0];
                             if (file) {
-                              setApplyForm({ ...applyForm, resume: file.name });
+                              setResumeFileName(file.name);
+                              const reader = new FileReader();
+                              reader.onload = () => {
+                                setApplyForm({ ...applyForm, resume: reader.result });
+                              };
+                              reader.readAsDataURL(file);
                             }
                           }}
                         />
                         <div className="file-upload-label">
                           <Upload size={16} />
-                          <span>{applyForm.resume || 'Choose PDF File...'}</span>
+                          <span>{resumeFileName || 'Choose PDF File...'}</span>
                         </div>
                       </div>
                     </div>

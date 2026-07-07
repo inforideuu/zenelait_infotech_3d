@@ -57,7 +57,7 @@ class Inquiry(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     message = models.TextField()
-    resume = models.CharField(max_length=255, null=True, blank=True)
+    resume = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

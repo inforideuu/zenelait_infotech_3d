@@ -298,7 +298,7 @@ def api_inquiries(request, item_id=None):
                 name=body.get('name', ''),
                 email=body.get('email', ''),
                 message=body.get('message', ''),
-                resume=body.get('resume', 'resume.pdf')
+                resume=body.get('resume', '')
             )
             return JsonResponse(to_dict(new_inq), status=201)
         except Exception as e:
@@ -438,7 +438,13 @@ def api_seed(request):
             Career.objects.create(title='Infrastructure Security Architect', department='Core Operations', salary='₹14,00,000 - ₹18,00,000', description='Securing distributed multi-node ledgers and automating failover safety matrices.', requirements='Kubernetes, AWS/GCP, Rust/Go, ledger encryption.')
 
             # Seed Inquiries
-            Inquiry.objects.create(name='Jonathan Vance', email='vance@enterprise.com', message='Interested in getting a custom ERP deployment mock-up for our manufacturing pipeline. Please contact me.', resume='resume.pdf')
+            Inquiry.objects.create(name='Jonathan Vance', email='vance@enterprise.com', message='Interested in getting a custom ERP deployment mock-up for our manufacturing pipeline. Please contact me.', resume='')
+            Inquiry.objects.create(
+                name='Alice Sterling',
+                email='alice@sterling.io',
+                message='[CAREER APPLICATION: Premium Frontend Engineer]\nResume/Links: resume.pdf\nCover Note: I would love to build immersive web matrices.',
+                resume='data:application/pdf;base64,JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nDM0VTAwMVAIQ0MlAyMTBSMTM0VDBTMFCwULDVNDYwtTEwVLJRMFMxNLUwUTAGP4B2MKZW5kc3RyZWFtCmVuZG9iagozIDAgb2JqCjQ2CmVuZG9iagoxIDAgb2JqCjw8L1R5cGUvUGFnZS9QYXJlbnQgNCAwIFIvUmVzb3VyY2VzPDwvRm9udDw8L0YxIDUgMCBSPj4+Pi9Db250ZW50cyAyIDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0+PgplbmRvYmoKNSAwIG9iago8PC9UeXBlL0ZvbnQvU3VidHlwZS9UeXBlMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9QYWdlcy9LaWRzWzEgMCBSXS9Db3VudCAxPj4KZW5kb2JqCjYgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDQgMCBSPj4KZW5kb2JqCjcgMCBvYmoKPDwvQ3JlYXRvcihBbnRpZ3Jhdml0eSkvQ3JlYXRpb25EYXRlKEQ6MjAyNjA3MDcwOTA5MDBaKT4+CmVuZG9iagp4cmVmCjAgOAowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAxMTAgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMDkxIDAwMDAwIGYgCjAwMDAwMDAyMjkgMDAwMDAgbiAKMDAwMDAwMDE0OCAwMDAwMCBuIAowMDAwMDAwMjc4IDAwMDAwIGYgCjAwMDAwMDAzMDkgMDAwMDAgZiAKdHJhaWxlcgo8PC9TaXplIDgvUm9vdCA2IDAgUi9JbmZvIDcgMCBSPj4Kc3RhcnR4cmVmCjM4MwpJRU9GCg=='
+            )
 
             # Seed Testimonials
             Testimonial.objects.create(name='Sarah Jenkins', role='CTO, GlobalFintech', content='Zenelait Infotech transformed our legacy ledger pipeline into a robust zero-trust architecture. The 3D telemetry views are game-changers.', rating=5, avatar='SJ')
