@@ -479,7 +479,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
           height: 100%;
           display: block;
           z-index: 1;
-          filter: brightness(1.25) contrast(1.2) saturate(2.5);
+          filter: brightness(1.25) contrast(1.2) saturate(1.5);
           transform-origin: center center;
           will-change: transform;
         }
