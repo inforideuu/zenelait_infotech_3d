@@ -6,21 +6,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FRAME_EXTENSION = "png"; // Configurable extension: "webp" or "png"
 
-const SHORT_NOTES = [
-  "Zenelait Infotech Leading digital transformations with robust, scalable enterprise ERP engines.",
-  "Securing core corporate grids using multi-factor biometric authentication.",
-  "Redefining workspace operations through cloud-managed digital learning systems.",
-  "Powering microservice-driven billing pipelines handling ultra-high transaction metrics.",
-  "Automating enterprise scale customer operations with neural conversational AI agents."
-];
-
 const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
   console.log('[Scroll3DCanvas] Component Rendered, setting up refs');
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const textRefs = useRef([]);
-  textRefs.current = [];
-
   const buttonGroupRef = useRef(null);
 
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -44,11 +33,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
 
-  const addToRefs = (el) => {
-    if (el && !textRefs.current.includes(el)) {
-      textRefs.current.push(el);
-    }
-  };
+
 
   // requestAnimationFrame Drawing Loop
   const performDraw = () => {
@@ -155,7 +140,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
 
   // 1. Progressive Image Loading System
   useEffect(() => {
-    const totalFrames = 151;
+    const totalFrames = 302;
     const stage1Count = 15;
     let loadedCount = 0;
 
@@ -164,9 +149,10 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
     const decodeAndCacheImage = (index) => {
       return new Promise((resolve) => {
         const img = new Image();
-        const frameNum = index.toString().padStart(3, '0');
-        const srcUrl = `/hero_images/ezgif-frame-${frameNum}.${FRAME_EXTENSION}`;
-        console.log(`[Scroll3DCanvas] decodeAndCacheImage called for index ${index}, src: ${srcUrl}`);
+        // Index 1-151 maps to hero-seq1, 152-302 maps to hero-seq2 (frame 1-151)
+        const frameNum = index <= 151 ? index.toString().padStart(3, '0') : (index - 151).toString().padStart(3, '0');
+        const folderName = index <= 151 ? 'hero-seq1' : 'hero-seq2';
+        const srcUrl = `/${folderName}/ezgif-frame-${frameNum}.${FRAME_EXTENSION}`;
 
         const handleLoad = async () => {
           try {
@@ -179,7 +165,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
 
           imagesRef.current[index] = img;
           loadedFramesRef.current.add(index);
-
+          
           loadedCount++;
           const progress = Math.round(5 + (loadedCount / totalFrames) * 95);
           onLoadProgress(progress);
@@ -203,7 +189,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
         };
 
         const handleError = (e) => {
-          console.error(`[Scroll3DCanvas] Failed to load image at index ${index}`, e);
+          console.error(`[Scroll3DCanvas] Failed to load image at index ${index} from ${srcUrl}`, e);
           loadedCount++;
           const progress = Math.round(5 + (loadedCount / totalFrames) * 95);
           onLoadProgress(progress);
@@ -212,7 +198,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
 
         img.onload = handleLoad;
         img.onerror = handleError;
-        img.src = `/hero_images/ezgif-frame-${frameNum}.${FRAME_EXTENSION}`;
+        img.src = srcUrl;
       });
     };
 
@@ -258,7 +244,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
       canvas.height = window.innerHeight;
       imageScaleCacheRef.current = {};
 
-      const frameToDraw = prefersReducedMotion.current ? 151 : scrollObj.current.currentFrame;
+      const frameToDraw = prefersReducedMotion.current ? 302 : scrollObj.current.currentFrame;
       requestDraw(frameToDraw);
     };
 
@@ -285,7 +271,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
     if (!imagesLoaded) return;
 
     // Trigger initial frame render
-    requestDraw(prefersReducedMotion.current ? 151 : 1);
+    requestDraw(prefersReducedMotion.current ? 302 : 1);
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -302,11 +288,11 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
           if (self.progress <= 0.8) {
             const normalizedProgress = self.progress / 0.8;
             frameIndex = Math.min(
-              151,
-              Math.max(1, Math.floor(normalizedProgress * 150) + 1)
+              302,
+              Math.max(1, Math.floor(normalizedProgress * 301) + 1)
             );
           } else {
-            frameIndex = 151;
+            frameIndex = 302;
           }
           scrollObj.current.currentFrame = frameIndex;
           requestDraw(frameIndex);
@@ -323,61 +309,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
       );
     }
 
-    // Sequence Keynote-grade animations for text
-    const activeTextRange = 0.8;
-    const segmentDuration = activeTextRange / SHORT_NOTES.length;
 
-    textRefs.current.forEach((textEl, idx) => {
-      if (prefersReducedMotion.current) {
-        gsap.set(textEl, { opacity: idx === 0 ? 1 : 0 });
-        return;
-      }
-
-      // Initial high-fidelity staging
-      gsap.set(textEl, {
-        opacity: 0,
-        y: 60,
-        scale: 0.9,
-        z: -100,
-        rotateX: -45,
-        filter: 'blur(15px)',
-        transformOrigin: 'center center'
-      });
-
-      const start = idx * segmentDuration;
-      const mid = start + segmentDuration * 0.4;
-      const holdEnd = start + segmentDuration * 0.7;
-
-      // Fade In + Move + Scale + Sharp + RotateX + Z depth
-      tl.to(textEl, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        z: 0,
-        rotateX: 0,
-        filter: 'blur(0px)',
-        duration: segmentDuration * 0.4,
-        ease: 'power2.out',
-      }, start);
-
-      // Subtle hold drift
-      tl.to(textEl, {
-        y: -10,
-        scale: 1.02,
-        duration: segmentDuration * 0.3,
-        ease: 'none'
-      }, mid);
-
-      // Outward transition
-      tl.to(textEl, {
-        opacity: 0,
-        y: -50,
-        scale: 1.05,
-        filter: 'blur(10px)',
-        duration: segmentDuration * 0.3,
-        ease: 'power2.in',
-      }, holdEnd);
-    });
 
     // buttonGroupRef entry animation (at the end, progress 0.85 to 1.0)
     if (buttonGroupRef.current) {
@@ -413,11 +345,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
       {/* Scroll-Based Image Sequence Canvas */}
       <canvas ref={canvasRef} className="hero-bg-canvas" />
 
-      {/* Volumetric Dark Overlay to keep text perfectly readable */}
-      <div className="hero-video-tint-overlay"></div>
 
-      {/* Cinematic Vignette */}
-      <div className="cinematic-vignette"></div>
 
       {/* Subtle Ambient Glow */}
       <div className="ambient-glow"></div>
@@ -433,19 +361,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
         </svg>
       </div>
 
-      {/* Floating Center Narrative Perspective Viewport */}
-      <div className="cinematic-perspective-portal">
-        {SHORT_NOTES.map((note, idx) => (
-          <h6
-            key={idx}
-            ref={addToRefs}
-            className="hero-center-short-note font-display"
-            style={{ position: 'absolute' }}
-          >
-            {note}
-          </h6>
-        ))}
-      </div>
+
 
       {/* Hero CTA Button Group */}
       <div ref={buttonGroupRef} className="hero-cta-button-group">
@@ -479,7 +395,7 @@ const Scroll3DCanvas = ({ onLoadProgress, onLoadComplete }) => {
           height: 100%;
           display: block;
           z-index: 1;
-          filter: brightness(1.25) contrast(1.2) saturate(1.5);
+          filter: brightness(1.1) contrast(1.1) saturate(1.0);
           transform-origin: center center;
           will-change: transform;
         }
