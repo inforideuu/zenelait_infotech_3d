@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
 // Global Layout Components
-import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Scroll3DCanvas from './components/Scroll3DCanvas';
 import FeatureShowcase from './components/FeatureShowcase';
@@ -26,9 +25,9 @@ import MethodologyPage from './components/pages/MethodologyPage';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(100);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [showContent, setShowContent] = useState(true);
   
   // Hash Routing State
   const [currentHash, setCurrentHash] = useState(window.location.hash);
@@ -140,9 +139,6 @@ function App() {
 
   return (
     <>
-      {/* Preloader overlay displayed strictly on initial homepage loads */}
-      {isHomepage && <Preloader progress={loadProgress} isLoaded={isLoaded} />}
-
       {/* Main View Wrapper */}
       <div 
         className={`experience-root ${
